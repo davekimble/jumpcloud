@@ -7,9 +7,11 @@ import (
     "encoding/base64"
     "net/http"
     "time"
+    "flag"
 )
 
 const debug bool = true
+var pause int
 
 func getHash(password string) (string) {
     if debug {
@@ -24,7 +26,6 @@ func getHash(password string) (string) {
 func handler(w http.ResponseWriter, r *http.Request) {
     if debug {
         fmt.Println("in handler()")
-        fmt.Println("pausing 5 seconds...")
     }
 
     password := r.URL.Query().Get("password")
@@ -37,9 +38,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
     if debug {
         fmt.Printf("password = %s\n", password)
+        fmt.Printf("pausing %d seconds...\n", pause)
     }
 
-    time.Sleep(time.Duration(5) * time.Second)
+    time.Sleep(time.Duration(pause) * time.Second)
 
     result := getHash(password)
     fmt.Printf("result = %s\n", result)
@@ -47,7 +49,16 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
     fmt.Println("Starting server...")
+    portPtr := flag.Int("port", 8080, "an int")
+    pausePtr := flag.Int("pause", 5, "an int")
+    flag.Parse()
+
+    portNumberString := fmt.Sprintf(":%d",*portPtr)
+    pause = *pausePtr
+
+    fmt.Println("portNumberString:", portNumberString)
+    fmt.Println("pause:", pause)
 
     http.HandleFunc("/", handler)
-    http.ListenAndServe(":8080", nil)
+    http.ListenAndServe(portNumberString, nil)
 }
