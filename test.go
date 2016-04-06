@@ -8,15 +8,28 @@ import (
     "net/http"
 )
 
+const debug bool = true
+
+func getHash(password string) (string) {
+    if debug {
+        fmt.Println("in getHash()")
+    }
+    hash := sha512.New()
+    io.WriteString( hash, password )
+    return base64.URLEncoding.EncodeToString(hash.Sum(nil))
+
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+    if debug {
+        fmt.Println("in handler()");
+    }
+    result := getHash("angryMonkey")
+    fmt.Println(result)
 }
 
 func main() {
-    var pw = "angryMonkey"
-    hash := sha512.New()
-    io.WriteString( hash, pw )
-    fmt.Println(base64.URLEncoding.EncodeToString(hash.Sum(nil)))
+    fmt.Println("Starting server...")
 
     http.HandleFunc("/", handler)
     http.ListenAndServe(":8080", nil)
