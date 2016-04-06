@@ -10,7 +10,7 @@ import (
     "flag"
 )
 
-const debug bool = true
+var debug bool
 var pause int
 
 func getHash(password string) (string) {
@@ -49,15 +49,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
     fmt.Println("Starting server...")
+    debugPtr := flag.Bool("debug", false, "a bool")
     portPtr := flag.Int("port", 8080, "an int")
     pausePtr := flag.Int("pause", 5, "an int")
     flag.Parse()
 
     portNumberString := fmt.Sprintf(":%d",*portPtr)
     pause = *pausePtr
+    debug = *debugPtr
 
-    fmt.Println("portNumberString:", portNumberString)
-    fmt.Println("pause:", pause)
+    if debug {
+        fmt.Println("portNumberString:", portNumberString)
+        fmt.Println("pause:", pause)
+    }
 
     http.HandleFunc("/", handler)
     http.ListenAndServe(portNumberString, nil)
