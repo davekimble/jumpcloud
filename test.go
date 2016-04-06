@@ -6,6 +6,7 @@ import (
     "io"
     "encoding/base64"
     "net/http"
+    "time"
 )
 
 const debug bool = true
@@ -22,10 +23,26 @@ func getHash(password string) (string) {
 
 func handler(w http.ResponseWriter, r *http.Request) {
     if debug {
-        fmt.Println("in handler()");
+        fmt.Println("in handler()")
+        fmt.Println("pausing 5 seconds...")
     }
-    result := getHash("angryMonkey")
-    fmt.Println(result)
+
+    password := r.URL.Query().Get("password")
+    if len(password) == 0 {
+        fmt.Println("ERROR - No password specified!")
+	return
+    }
+
+    io.WriteString(w, password)
+
+    if debug {
+        fmt.Printf("password = %s\n", password)
+    }
+
+    time.Sleep(time.Duration(5) * time.Second)
+
+    result := getHash(password)
+    fmt.Printf("result = %s\n", result)
 }
 
 func main() {
