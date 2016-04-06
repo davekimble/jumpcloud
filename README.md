@@ -25,12 +25,3 @@ Once the server is running, send a password to it to get hashed result like this
 ```shell
 > curl http://localhost:8088?password=angryMonkey
 ```
-
-## Testing
-
-To test multiple connections (using the default values), run the 
-```shell
-> curlTest.sh
-```
-
-The script will make four connections (each with a different password).
