@@ -34,8 +34,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	return
     }
 
-    io.WriteString(w, password)
-
     if debug {
         fmt.Printf("password = %s\n", password)
         fmt.Printf("pausing %d seconds...\n", pause)
@@ -45,6 +43,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
     result := getHash(password)
     fmt.Printf("result = %s\n", result)
+
+    io.WriteString(w, result)
 }
 
 func main() {
