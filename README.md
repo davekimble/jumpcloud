@@ -21,7 +21,15 @@ To run with a pause of **3** seconds, run it like this:
 > go run test -pause=3
 ```
 
+Also, if you'd like to show debug information as the server is running, set the debug flag to true like this:
+```shell
+> go run test -debug=true
+```
+
+
+
 Once the server is running, send a password to it to get hashed result like this:
 ```shell
 > curl http://localhost:8088?password=angryMonkey
 ```
+
