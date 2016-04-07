@@ -28,8 +28,13 @@ Also, if you'd like to show debug information as the server is running, set the 
 
 
 
-Once the server is running, send a password to it to get hashed result like this:
+Once the server is running, send a password to it to get hashed by running this from another shell:
 ```shell
 > curl http://localhost:8088?password=angryMonkey
+```
+
+or this:
+```shell
+> curl --data "password=angryMonkey" http://localhost:8080
 ```
 

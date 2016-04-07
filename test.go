@@ -28,7 +28,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
         fmt.Println("in handler()")
     }
 
-    password := r.URL.Query().Get("password")
+    r.ParseForm()
+    if debug {
+        fmt.Printf("r.Form = %s\n", r.Form)
+    }
+
+    password := r.Form["password"][0]
+
     if len(password) == 0 {
         fmt.Println("ERROR - No password specified!")
 	return
